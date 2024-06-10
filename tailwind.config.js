@@ -16,7 +16,8 @@ module.exports = {
         secondary2:'#f73859'
       },
       maxWidth:{
-        '600':'600px'
+        '600':'600px',
+        '1100':'1100px'
       }
       
     },
