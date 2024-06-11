@@ -10,7 +10,7 @@ const {GrNext,
   IoSearch  } = icons
 const Search = () => {
   return (
-    <div className='h-[55px] p-[10px] bg-[#febb02] rounded-lg flex items-center justify-around gap-2'>
+    <div className='p-[10px] w-3/5 my-3  bg-[#febb02] rounded-lg flex-col lg:flex-row flex items-center justify-around gap-2'>
       <SearchItem IconBefore={<PiBuildingApartmentThin/>} fontWeight IconAfter={<FaDeleteLeft/>} text='Phòng trọ, nhà trọ' />
       <SearchItem IconBefore={<IoLocationOutline/>} IconAfter={<GrNext className='text-gray-300'/>} text='Toàn quốc' />
       <SearchItem IconBefore={<GiMoneyStack/>} IconAfter={<GrNext className='text-gray-300'/>} text='Chọn giá' />
