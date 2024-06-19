@@ -1,8 +1,10 @@
 import React from 'react'
 import {text} from '../../ultils/constain'
 import { Province } from '../../componets'
-import {List} from './index'
+import {List, Pagination} from './index'
+import { useSearchParams } from 'react-router-dom'
 const Homepage = () => {
+  const [params]= useSearchParams()
   return (
     <div className='border border-red-500 w-full flex flex-col gap-3'>  
       <div>
@@ -12,7 +14,9 @@ const Homepage = () => {
       <Province/>
       <div className='w-full flex gap-4'>
         <div className='w-[70%]'>
-          <List/>
+          <List  page={params.get('page')}/>
+          <Pagination page={params.get('page')}/>
+          <div className='h-[500px]'></div>
         </div>
         <div className='w-[30%] border border-green-500'>
           sideBar

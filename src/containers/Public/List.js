@@ -1,14 +1,14 @@
 import React, {useEffect} from 'react'
 import { Button,Item } from '../../componets'
-import { getPosts } from '../../store/actions/postAction'
+import { getPosts, getPostsLimit } from '../../store/actions/postAction'
 import {useDispatch,useSelector} from 'react-redux'
-const List = () => {
+const List = ({page}) => {
   const dispatch= useDispatch()
-  const {posts} = useSelector(state=>state.post)
-  
+  const {posts,count} = useSelector(state=>state.post)
   useEffect(() => {
-    dispatch(getPosts())
-  }, [])
+    let offset = page? +page-1:0 
+    dispatch(getPostsLimit(offset))
+  }, [page])
   return (
     <div className='w-full p-2 bg-white shadow-md rounded-md'>
       <div className='flex items-center justify-between my-3'>
@@ -34,6 +34,7 @@ const List = () => {
               star={+item?.star}
               title={item?.title}
               user={item?.user}
+              id={item?.id}
             />
           )
         })}

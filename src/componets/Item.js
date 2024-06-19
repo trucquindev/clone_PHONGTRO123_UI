@@ -1,14 +1,21 @@
 import React, { memo, useState } from 'react'
 import icons from '../ultils/icons'
-
-
+import { useNavigate, Link} from 'react-router-dom'
+import {formatVietNameseToString} from '../ultils/common/formatVietNamese'
 const indexs=[0,1,2,3]
 const { MdOutlineStar,BsSuitHeart,BsFillSuitHeartFill}=icons
-const Item = ({images,user,title,star,description, attributes, address}) => {
+const Item = ({images,user,title,star,description, attributes, address, id}) => {
     const [isHoverHeart, setIsHoverHeart]= useState(false)
+    const navigate = useNavigate()
+    const handleStart = (star) =>{
+        let starts=[]
+        for(let i=1; i<=+star;i++) starts.push(<MdOutlineStar className='start-item' size={18} color='yellow'/>)
+        return starts
+    }
+    console.log(handleStart(5));
   return (
     <div className='w-full flex border-t border-orange-700 p-1'>
-        <div className='w-2/5 flex flex-wrap gap-[2px] items-center relative cursor-pointer'>
+        <Link to={`chi-tiet/${formatVietNameseToString(title)}/${id}`} className='w-2/5 flex flex-wrap gap-[2px] items-center relative cursor-pointer'>
             {images.length>0 && images.filter((i,index)=> indexs.some(i=>i===index))?.map((i,index)=>{
                     if(i!== null){
                         return <img src={i} alt='privew' key={index} className='w-[110px] h-[115px] object-cover'/>
@@ -27,15 +34,15 @@ const Item = ({images,user,title,star,description, attributes, address}) => {
             >
                 {isHoverHeart ? <BsFillSuitHeartFill size={22} color='pink'/> :<BsSuitHeart size={22}/> }
             </span>
-        </div>
+        </Link>
         <div className='w-3/5'>
             <div className='flex justify-between gap-4 w-full'>
                 <div className='text-red-600 font-medium'>
-                    <MdOutlineStar className='start-item' size={18} color='yellow'/>
-                    <MdOutlineStar className='start-item' size={18} color='yellow'/>
-                    <MdOutlineStar className='start-item' size={18} color='yellow'/>
-                    <MdOutlineStar className='start-item' size={18} color='yellow'/>
-                    <MdOutlineStar className='start-item' size={18} color='yellow'/>
+                    {handleStart(+star).length > 0 && handleStart(+star).map((star, number)=>{
+                        return (
+                            <span key={number}>{star}</span>
+                        )
+                    })}
                     {title}
                 </div>
             </div>

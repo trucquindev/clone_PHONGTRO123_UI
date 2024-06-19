@@ -1,8 +1,8 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import logo from '../../assets/logowithoutbg.png'
 import { Button } from '../../componets';
 import icons from '../../ultils/icons';
-import { useNavigate,Link } from 'react-router-dom';
+import { useNavigate,Link ,useSearchParams} from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/actions'
 
@@ -11,12 +11,18 @@ const { BsPlusCircleDotted}=icons
 const Header=()=>{
     const navigate=useNavigate()
     const dispatch= useDispatch()
+    const headerRef= useRef()
+    const [searchParams]= useSearchParams()
     const {isLoggedIn}= useSelector(state=>state.auth)
     const goLogin = useCallback((flag)=>{
         navigate(path.LOGIN,{state:{flag}})
     },[navigate])
+
+    useEffect(()=>{
+        headerRef.current.scrollIntoView({behavior:'smooth', block:'start'})
+    },[searchParams.get('page')])
     return(
-        <div className="w-3/5">
+        <div ref={headerRef} className="w-3/5">
             <div className='w-full flex items-center justify-between'>
                 <Link to={'/'}><img src={logo}
                     alt='logo'

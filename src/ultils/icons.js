@@ -7,6 +7,8 @@ import { GiMoneyStack } from "react-icons/gi";
 import { SlCrop } from "react-icons/sl";
 import { IoSearch } from "react-icons/io5";
 import { MdOutlineStar } from "react-icons/md";
+import { TbPlayerTrackNext,TbPlayerTrackPrev } from "react-icons/tb";
+
 const icons={
     BsPlusCircleDotted,
     GrNext,
@@ -18,7 +20,9 @@ const icons={
     IoSearch,
     MdOutlineStar,
     BsSuitHeart,
-    BsFillSuitHeartFill
+    BsFillSuitHeartFill,
+    TbPlayerTrackNext,
+    TbPlayerTrackPrev
 }
 
 export default icons
