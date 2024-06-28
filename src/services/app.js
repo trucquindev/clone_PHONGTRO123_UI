@@ -1,22 +1,21 @@
 import axiosConfig from "../axiosConfig";
 
-export const apiGetPosts = (payload)=> new Promise(async(resolve, reject)=>{
+export const apiGetPrices = ()=> new Promise(async(resolve, reject)=>{
     try {
         const response = await axiosConfig({
             method:'GET',
-            url:'api/v1/post/all'
+            url:'api/v1/price/all'
         })
         resolve(response)
     } catch (error) {
         reject(error);
     }
 })
-export const apiGetPostsLimit = (query)=> new Promise(async(resolve, reject)=>{
+export const aipGetAreas = ()=> new Promise(async(resolve, reject)=>{
     try {
         const response = await axiosConfig({
             method:'GET',
-            url:`api/v1/post/limit`,
-            params:query
+            url:'api/v1/area/all'
         })
         resolve(response)
     } catch (error) {
