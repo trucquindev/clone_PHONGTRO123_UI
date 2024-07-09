@@ -34,7 +34,6 @@ const Login=()=>{
             password:payload.password
         }
         let invalidate=validate(finalPayload)
-        console.log(invaliableFiles);
         if (invalidate===0) {isRegister? dispatch(actions.register(payload)): dispatch(actions.loggin(payload))};
     }
     const validate=(payload)=>{
