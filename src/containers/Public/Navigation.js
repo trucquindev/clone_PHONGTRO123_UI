@@ -1,23 +1,21 @@
-import React,{useEffect,useState} from "react";
+import React,{useEffect} from "react";
 import { NavLink } from "react-router-dom";
-import {apiGetCategory} from '../../services/category'
-import { formatVietNameseToString } from "../../ultils/constain";
+import { formatVietNameseToString } from "../../ultils/common/formatVietNamese";
+import {useDispatch ,useSelector} from 'react-redux'
+import * as action from '../../store/actions'
+
+
 const notActive='hover:bg-secondary2 px-4 h-full flex items-center bg-secondary1'
 const active='hover:bg-secondary2 px-4 h-full flex items-center bg-secondary2'
 const Navigation=()=>{
-    const [categories,setCategories] = useState([])
+    const dispatch = useDispatch()
+    const {categories}= useSelector(state=>state.app)
     useEffect(()=>{
-        const fetchApiCategory=async()=>{
-            const response = await apiGetCategory()
-            if(response?.data.err===0){
-                setCategories(response.data.response)
-            }
-        }
-        fetchApiCategory()
+        dispatch(action.getCategories())
     },[])
     return (
-        <div className="w-screen flex justify-center items-center h-[40px] bg-secondary1 text-white">
-            <div className="w3/5 flex h-full items-center text-sm font-medium">
+        <div className="w-full flex justify-center items-center h-[40px] bg-secondary1 text-white">
+            <div className="w3/5 flex h-[40px] items-center text-sm  font-medium">
                 <NavLink to={'/'}
                             className={({isActive})=> isActive ? active:notActive}>
                                 Trang chủ

@@ -36,8 +36,6 @@ const Login=()=>{
         let invalidate=validate(finalPayload)
         console.log(invaliableFiles);
         if (invalidate===0) {isRegister? dispatch(actions.register(payload)): dispatch(actions.loggin(payload))};
-        
-        console.log(invalidate);
     }
     const validate=(payload)=>{
         const fileds= Object.entries(payload)
