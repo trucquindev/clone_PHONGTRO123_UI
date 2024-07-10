@@ -3,7 +3,7 @@ import { Button,Item } from '../../componets'
 import { getPosts, getPostsLimit } from '../../store/actions/postAction'
 import {useDispatch,useSelector} from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
-const List = ({page}) => {
+const List = ({categoryCode}) => {
   const dispatch= useDispatch()
   const [searchParams]= useSearchParams()
   const {posts,count} = useSelector(state=>state.post)
@@ -16,8 +16,10 @@ const List = ({page}) => {
     params?.map(i=>{
       searchParamsObject={...searchParamsObject,[i[0]]:i[1]}
     })
+    if(categoryCode) searchParamsObject.categoryCode=categoryCode
     dispatch(getPostsLimit(searchParamsObject))
-  }, [searchParams])
+  }, [searchParams, categoryCode])
+  
   return (
     <div className='w-full p-2 bg-white shadow-md rounded-md'>
       <div className='flex items-center justify-between my-3'>

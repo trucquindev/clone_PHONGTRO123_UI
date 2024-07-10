@@ -1,10 +1,11 @@
 import React, { memo } from 'react'
 import { createSearchParams, useNavigate } from "react-router-dom";
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams ,useLocation} from 'react-router-dom';
 const active= 'w-[46px] h-[48px] flex items-center justify-center bg-[#E13427] text-white  rounded-md'
 const notActive= 'w-[46px] h-[48px] flex items-center justify-center bg-white rounded-md'
 const PageNumber = ({text,currentPage,icon, setCurrentPage, type}) => {
   const [searchParams] = useSearchParams()
+  const location = useLocation()
   let entries= searchParams.entries()
 
   const append= (entries)=>{
@@ -24,7 +25,7 @@ const PageNumber = ({text,currentPage,icon, setCurrentPage, type}) => {
     if(text!='...'){
       setCurrentPage(+text)
       navigate({
-        pathname: "/",
+        pathname: location.pathname,
         search: createSearchParams(append(entries)).toString()
       });
     }
