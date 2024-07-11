@@ -10,3 +10,4 @@ export {default as Contact} from './Contact';
 export {default as Intro} from './Intro';
 export {default as RelatedPost} from './RelatedPost';
 export {default as SmallItem} from './SmallItem';
+export {default as Model} from './Model';

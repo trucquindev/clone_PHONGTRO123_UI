@@ -1,10 +1,16 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from './Header';
 import { Outlet } from 'react-router-dom';
 import {Navigation,Search} from './index';
 import { Intro,Contact } from '../../componets';
+import { useDispatch } from 'react-redux';
+import * as actions from '../../store/actions'
 const Home=()=>{
+    const dispatch = useDispatch();
+    useEffect(()=>{
+        dispatch(actions.getProvinces())
+    },[])
     return(
         <div className='w-full flex flex-col items-center h-full gap-6'>
             <Header/>
@@ -15,7 +21,7 @@ const Home=()=>{
             </div>
             <Intro/>
             <Contact/>
-            <div className='h-[500px]'></div>
+            <div className='h-[50px]'></div>
         </div>
     )
 }

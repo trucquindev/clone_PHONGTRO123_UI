@@ -1,5 +1,5 @@
 import { BsPlusCircleDotted ,BsSuitHeart,BsFillSuitHeartFill} from "react-icons/bs";
-import { GrNext } from "react-icons/gr";
+import { GrNext,GrLinkPrevious } from "react-icons/gr";
 import { PiBuildingApartmentThin } from "react-icons/pi";
 import { FaDeleteLeft } from "react-icons/fa6";
 import { IoLocationOutline } from "react-icons/io5";
@@ -22,7 +22,8 @@ const icons={
     BsSuitHeart,
     BsFillSuitHeartFill,
     TbPlayerTrackNext,
-    TbPlayerTrackPrev
+    TbPlayerTrackPrev,
+    GrLinkPrevious
 }
 
 export default icons

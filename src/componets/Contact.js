@@ -3,7 +3,7 @@ import { text } from '../ultils/dataContact'
 import {Button} from'../componets/index'
 const Contact = () => {
   return (
-    <div className='w-3/5 border border-red-400 bg-white rounded-md shadow-md p-4 gap-6 flex flex-col justify-center items-center'>
+    <div className='w-3/5 bg-white rounded-md shadow-md p-4 gap-6 flex flex-col justify-center items-center'>
       <img 
       src={text.image} 
       alt='thumbnal'

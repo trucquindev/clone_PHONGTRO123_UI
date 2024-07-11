@@ -22,3 +22,14 @@ export const aipGetAreas = ()=> new Promise(async(resolve, reject)=>{
         reject(error);
     }
 })
+export const aipGetProvinces = ()=> new Promise(async(resolve, reject)=>{
+    try {
+        const response = await axiosConfig({
+            method:'GET',
+            url:'api/v1/province/all'
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error);
+    }
+})
