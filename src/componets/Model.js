@@ -1,14 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import icons from "../ultils/icons";
-
+import { getNumbers } from "../ultils/common/getNumber";
+import { getCodes, getCodesArea } from "../ultils/common/getCodes";
 const { GrLinkPrevious } = icons;
-const Model = ({ setIsShowModel, content, name }) => {
-  const [persent1, setPersent1] = useState(0);
-  const [persent2, setPersent2] = useState(100);
+const Model = ({
+  setIsShowModel,
+  content,
+  name,
+  handleSummit,
+  queries,
+  arrMinMax,
+}) => {
+  const [persent1, setPersent1] = useState(() => {
+    if (name === "prices" && arrMinMax?.pricesArr) {
+      return arrMinMax.pricesArr[0];
+    } else if (name === "areas" && arrMinMax?.areasArr) {
+      return arrMinMax.areasArr[0];
+    } else {
+      return 0;
+    }
+  });
+  const [persent2, setPersent2] = useState(() => {
+    if (name === "prices" && arrMinMax?.pricesArr) {
+      return arrMinMax.pricesArr[1];
+    } else if (name === "areas" && arrMinMax?.areasArr) {
+      return arrMinMax.areasArr[1];
+    } else {
+      return 100;
+    }
+  });
   const [activeEl, setActiveEl] = useState("");
   useEffect(() => {
     const trackActiveEle = document.getElementById("trackActive");
-    if (activeEl) {
+    if (name === "prices" || name === "areas") {
       if (persent2 <= persent1) {
         trackActiveEle.style.left = `${persent2}%`;
         trackActiveEle.style.right = `${100 - persent1}%`;
@@ -41,41 +65,58 @@ const Model = ({ setIsShowModel, content, name }) => {
       ? Math.ceil(Math.round((percent * 90) / 100) / 5) * 5
       : 1;
   };
-  const convert15to100 = (percent) => {
+  const convertTo100 = (percent) => {
     let target = name === "prices" ? 15 : name === "areas" ? 90 : 1;
     return Math.floor((percent / target) * 100);
   };
-  const getNumbers = (string) =>
-    string
-      .split(" ")
-      .map((item) => +item.match(/\d+/))
-      .filter((item) => item !== 0);
   const handleChangeActive = (code, value) => {
     setActiveEl(code);
     let arr = getNumbers(value);
     if (arr.length === 1) {
       if (arr[0] === 1) {
         setPersent1(0);
-        setPersent2(convert15to100(1));
+        setPersent2(convertTo100(1));
       } else if (arr[0] === 15) {
         setPersent1(100);
         setPersent2(100);
       }
       if (arr[0] === 20) {
         setPersent1(0);
-        setPersent2(convert15to100(20));
+        setPersent2(convertTo100(20));
       } else if (arr[0] === 90) {
         setPersent1(100);
         setPersent2(100);
       }
     } else {
-      setPersent1(convert15to100(arr[0]));
-      setPersent2(convert15to100(arr[1]));
+      setPersent1(convertTo100(arr[0]));
+      setPersent2(convertTo100(arr[1]));
     }
   };
-  const handleSummit = () => {
-    console.log("start", convert100toTager(persent1));
-    console.log("end", convert100toTager(persent2));
+  const handleBeforSubmit = (e) => {
+    const gaps =
+      name === "prices"
+        ? getCodes(
+            [convert100toTager(persent1), convert100toTager(persent2)],
+            content
+          )
+        : name === "areas"
+        ? getCodesArea(
+            [convert100toTager(persent1), convert100toTager(persent2)],
+            content
+          )
+        : [];
+    handleSummit(
+      e,
+      {
+        [`${name}Code`]: gaps?.map((item) => item.code),
+        [name]: `Từ ${convert100toTager(persent1)} - ${convert100toTager(
+          persent2
+        )} ${name === "areas" ? "m2" : "triệu"}`,
+      },
+      {
+        [`${name}Arr`]: [persent1, persent2],
+      }
+    );
   };
   return (
     <div
@@ -116,6 +157,15 @@ const Model = ({ setIsShowModel, content, name }) => {
                     name={name}
                     id={item.code}
                     value={item.code}
+                    defaultChecked={
+                      item.code === queries[`${name}Code`] ? true : false
+                    }
+                    onClick={(e) =>
+                      handleSummit(e, {
+                        [name]: item.value,
+                        [`${name}Code`]: item.code,
+                      })
+                    }
                   />
                   <label htmlFor={item.code}>{item.value}</label>
                 </span>
@@ -127,15 +177,19 @@ const Model = ({ setIsShowModel, content, name }) => {
           <div className="p-12">
             <div className="flex flex-col items-center justify-center relative transition-all">
               <div className="z-20 absolute top-[-38px] font-semibold text-lg text-orange-400">
-                {`Từ ${
-                  persent1 <= persent2
-                    ? convert100toTager(persent1)
-                    : convert100toTager(persent2)
-                } - ${
-                  persent1 >= persent2
-                    ? convert100toTager(persent1)
-                    : convert100toTager(persent2)
-                } ${name === "prices" ? "triệu" : "m2"}`}
+                {persent1 === 100 && persent2 === 100
+                  ? `Trên ${convert100toTager(persent1)} ${
+                      name === "prices" ? "triệu" : "m2"
+                    }+`
+                  : `${persent1 === 100 && persent2 === 100 ? "Trên" : "Từ"} ${
+                      persent1 <= persent2
+                        ? convert100toTager(persent1)
+                        : convert100toTager(persent2)
+                    } - ${
+                      persent1 >= persent2
+                        ? convert100toTager(persent1)
+                        : convert100toTager(persent2)
+                    } ${name === "prices" ? "triệu" : "m2"}`}
               </div>
               <div
                 id="track"
@@ -145,7 +199,7 @@ const Model = ({ setIsShowModel, content, name }) => {
               <div
                 id="trackActive"
                 onClick={handleChangeThumb}
-                className="slider-track-active h-[5px] bg-orange-500 rounded-md absolute top-0 bottom-0"
+                className="slider-track-active h-[5px] bg-orange-500 rounded-md absolute top-0 bottom-0 "
               ></div>
               <input
                 type="range"
@@ -203,8 +257,10 @@ const Model = ({ setIsShowModel, content, name }) => {
                   return (
                     <span
                       key={item.code}
-                      className={`px-4 bg-gray-300 rounded-md cursor-pointer ${
-                        item.code === activeEl ? "bg-blue-500 text-white" : ""
+                      className={`px-4 rounded-md cursor-pointer ${
+                        item.code === activeEl
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-300"
                       }`}
                       onClick={() => handleChangeActive(item.code, item.value)}
                     >
@@ -220,7 +276,7 @@ const Model = ({ setIsShowModel, content, name }) => {
           <button
             type="button"
             className="w-full font-medium bg-orange-400 py-2 rounded-bl-md rounded-br-md"
-            onClick={handleSummit}
+            onClick={handleBeforSubmit}
           >
             ÁP DỤNG
           </button>
@@ -230,4 +286,4 @@ const Model = ({ setIsShowModel, content, name }) => {
   );
 };
 
-export default Model;
+export default memo(Model);
