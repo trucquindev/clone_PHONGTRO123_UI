@@ -10,21 +10,22 @@ const Model = ({
   handleSummit,
   queries,
   arrMinMax,
+  defaultText,
 }) => {
   const [persent1, setPersent1] = useState(() => {
-    if (name === "prices" && arrMinMax?.pricesArr) {
-      return arrMinMax.pricesArr[0];
-    } else if (name === "areas" && arrMinMax?.areasArr) {
-      return arrMinMax.areasArr[0];
+    if (name === "price" && arrMinMax?.priceArr) {
+      return arrMinMax.priceArr[0];
+    } else if (name === "area" && arrMinMax?.areaArr) {
+      return arrMinMax.areaArr[0];
     } else {
       return 0;
     }
   });
   const [persent2, setPersent2] = useState(() => {
-    if (name === "prices" && arrMinMax?.pricesArr) {
-      return arrMinMax.pricesArr[1];
-    } else if (name === "areas" && arrMinMax?.areasArr) {
-      return arrMinMax.areasArr[1];
+    if (name === "price" && arrMinMax?.priceArr) {
+      return arrMinMax.priceArr[1];
+    } else if (name === "area" && arrMinMax?.areaArr) {
+      return arrMinMax.areaArr[1];
     } else {
       return 100;
     }
@@ -32,7 +33,7 @@ const Model = ({
   const [activeEl, setActiveEl] = useState("");
   useEffect(() => {
     const trackActiveEle = document.getElementById("trackActive");
-    if (name === "prices" || name === "areas") {
+    if (name === "price" || name === "area") {
       if (persent2 <= persent1) {
         trackActiveEle.style.left = `${persent2}%`;
         trackActiveEle.style.right = `${100 - persent1}%`;
@@ -59,14 +60,14 @@ const Model = ({
     activeEl && setActiveEl("");
   };
   const convert100toTager = (percent) => {
-    return name === "prices"
+    return name === "price"
       ? (Math.ceil(Math.round(percent * 1.5) / 5) * 5) / 10
-      : name === "areas"
+      : name === "area"
       ? Math.ceil(Math.round((percent * 90) / 100) / 5) * 5
       : 1;
   };
   const convertTo100 = (percent) => {
-    let target = name === "prices" ? 15 : name === "areas" ? 90 : 1;
+    let target = name === "price" ? 15 : name === "area" ? 90 : 1;
     return Math.floor((percent / target) * 100);
   };
   const handleChangeActive = (code, value) => {
@@ -93,28 +94,28 @@ const Model = ({
     }
   };
   const handleBeforSubmit = (e) => {
-    const gaps =
-      name === "prices"
-        ? getCodes(
-            [convert100toTager(persent1), convert100toTager(persent2)],
-            content
-          )
-        : name === "areas"
-        ? getCodesArea(
-            [convert100toTager(persent1), convert100toTager(persent2)],
-            content
-          )
-        : [];
+    let min = persent1 <= persent2 ? persent1 : persent2;
+    let max = persent1 <= persent2 ? persent2 : persent1;
+    let arrMinMax = [convert100toTager(min), convert100toTager(max)];
+    // const gaps =
+    //   name === "price"
+    //     ? getCodes([convert100toTager(min), convert100toTager(max)], content)
+    //     : name === "area"
+    //     ? getCodesArea(
+    //         [convert100toTager(min), convert100toTager(max)],
+    //         content
+    //       )
+    //     : [];
     handleSummit(
       e,
       {
-        [`${name}Code`]: gaps?.map((item) => item.code),
-        [name]: `Từ ${convert100toTager(persent1)} - ${convert100toTager(
-          persent2
-        )} ${name === "areas" ? "m2" : "triệu"}`,
+        [`${name}Number`]: arrMinMax,
+        [name]: `Từ ${convert100toTager(min)} - ${convert100toTager(max)} ${
+          name === "area" ? "m2" : "triệu"
+        }`,
       },
       {
-        [`${name}Arr`]: [persent1, persent2],
+        [`${name}Arr`]: [min, max],
       }
     );
   };
@@ -130,7 +131,7 @@ const Model = ({
           e.stopPropagation(); // chong noi bot
           setIsShowModel(true);
         }}
-        className="w-2/4 bg-white rounded-md"
+        className="w-2/4 h-[400px] bg-white rounded-md relative"
       >
         <div className="h-[45px] px-4 flex items-center border-b border-gray-300">
           <span
@@ -144,8 +145,24 @@ const Model = ({
           </span>
           <h3 className="">CHỌN TỈNH THÀNH</h3>
         </div>
-        {(name === "categories" || name === "provinces") && (
+        {(name === "category" || name === "province") && (
           <div className="p-4 flex flex-col">
+            <span className="py-2 flex gap-2 items-center border-b border-gray-200">
+              <input
+                type="radio"
+                id="default"
+                name={name}
+                value={defaultText || ""}
+                defaultChecked={!queries[`${name}Code`] ? true : false}
+                onClick={(e) =>
+                  handleSummit(e, {
+                    [name]: defaultText,
+                    [`${name}Code`]: null,
+                  })
+                }
+              />
+              <label htmlFor={"default"}>{defaultText}</label>
+            </span>
             {content?.map((item) => {
               return (
                 <span
@@ -173,13 +190,13 @@ const Model = ({
             })}
           </div>
         )}
-        {(name === "prices" || name === "areas") && (
+        {(name === "price" || name === "area") && (
           <div className="p-12">
             <div className="flex flex-col items-center justify-center relative transition-all">
               <div className="z-20 absolute top-[-38px] font-semibold text-lg text-orange-400">
                 {persent1 === 100 && persent2 === 100
                   ? `Trên ${convert100toTager(persent1)} ${
-                      name === "prices" ? "triệu" : "m2"
+                      name === "price" ? "triệu" : "m2"
                     }+`
                   : `${persent1 === 100 && persent2 === 100 ? "Trên" : "Từ"} ${
                       persent1 <= persent2
@@ -189,7 +206,7 @@ const Model = ({
                       persent1 >= persent2
                         ? convert100toTager(persent1)
                         : convert100toTager(persent2)
-                    } ${name === "prices" ? "triệu" : "m2"}`}
+                    } ${name === "price" ? "triệu" : "m2"}`}
               </div>
               <div
                 id="track"
@@ -242,9 +259,9 @@ const Model = ({
                     setPersent2(100);
                   }}
                 >
-                  {name === "prices"
+                  {name === "price"
                     ? "15 triệu+"
-                    : name === "areas"
+                    : name === "area"
                     ? "Trên 90 m2"
                     : ""}
                 </span>
@@ -272,10 +289,10 @@ const Model = ({
             </div>
           </div>
         )}
-        {(name === "prices" || name === "areas") && (
+        {(name === "price" || name === "area") && (
           <button
             type="button"
-            className="w-full font-medium bg-orange-400 py-2 rounded-bl-md rounded-br-md"
+            className="w-full absolute bottom-0 font-medium bg-orange-400 py-2 rounded-bl-md rounded-br-md"
             onClick={handleBeforSubmit}
           >
             ÁP DỤNG
