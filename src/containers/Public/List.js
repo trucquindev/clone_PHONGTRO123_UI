@@ -28,7 +28,7 @@ const List = ({ categoryCode }) => {
     <div className="w-full p-2 bg-white shadow-md rounded-md">
       <div className="flex items-center justify-between my-3">
         <h4 className="text-base font-semibold">Danh sách tin đăng</h4>
-        <span className="text-xs">Cap nhat ngay 11/06/2024</span>
+        <span className="text-xs">Cập nhật ngày 11/06/2024</span>
       </div>
       <div className="flex items-center gap-2 text-[12px] my-2">
         <span>Sắp xếp:</span>
