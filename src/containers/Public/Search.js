@@ -70,11 +70,7 @@ const Search = () => {
     });
     let titleSearch = `${
       queriesTextObj.category ? queriesTextObj.category : "Cho thuê tất cả"
-    } ${
-      queriesTextObj.province
-        ? `khu vực ${queriesTextObj.province.toLowerCase()}`
-        : ""
-    } ${
+    } ${queriesTextObj.province ? `khu vực ${queriesTextObj.province}` : ""} ${
       queriesTextObj.price
         ? `có giá ${queriesTextObj.price.replace("-", "đến").toLowerCase()}`
         : ""

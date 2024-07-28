@@ -8,6 +8,7 @@ import {
   SearchDetail,
 } from "./containers/Public";
 import { path } from "./ultils/constain";
+import { System, CreatePost } from "./containers/System";
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
           />
           <Route path={"chi-tiet/*"} element={<DetailPost />} />
           <Route path={path.SEARCH} element={<SearchDetail />} />
+        </Route>
+        <Route path={path.SYSTEM} element={<System />}>
+          <Route path={path.CREATE_POST} element={<CreatePost />} />
         </Route>
       </Routes>
     </div>

@@ -97,15 +97,6 @@ const Model = ({
     let min = persent1 <= persent2 ? persent1 : persent2;
     let max = persent1 <= persent2 ? persent2 : persent1;
     let arrMinMax = [convert100toTager(min), convert100toTager(max)];
-    // const gaps =
-    //   name === "price"
-    //     ? getCodes([convert100toTager(min), convert100toTager(max)], content)
-    //     : name === "area"
-    //     ? getCodesArea(
-    //         [convert100toTager(min), convert100toTager(max)],
-    //         content
-    //       )
-    //     : [];
     handleSummit(
       e,
       {

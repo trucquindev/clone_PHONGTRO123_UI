@@ -21,7 +21,9 @@ const List = ({ categoryCode }) => {
       }
     });
     if (categoryCode) searchParamsObject.categoryCode = categoryCode;
-    dispatch(getPostsLimit(searchParamsObject));
+    setTimeout(() => {
+      dispatch(getPostsLimit(searchParamsObject));
+    }, 200);
   }, [searchParams, categoryCode]);
 
   return (
