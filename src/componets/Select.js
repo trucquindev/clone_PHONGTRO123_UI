@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 
-const SelectAddress = ({ label, options, value, setValue, type, reset }) => {
+const Select = ({ label, options, value, setValue, type, reset, name }) => {
   return (
     <div className="flex flex-col gap-2 flex-1">
       <label className="font-medium" htmlFor="select-address">
@@ -8,7 +8,11 @@ const SelectAddress = ({ label, options, value, setValue, type, reset }) => {
       </label>
       <select
         value={reset ? "" : value || ""}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) =>
+          !name
+            ? setValue(e?.target?.value)
+            : setValue((prev) => ({ ...prev, [name]: e.target.value }))
+        }
         id="select-address"
         name="select-address"
         className="outline-none border border-gray-300 w-full p-2 rounded-md"
@@ -21,7 +25,9 @@ const SelectAddress = ({ label, options, value, setValue, type, reset }) => {
                 type === "province"
                   ? item?.province_id
                   : type === "district"
-                  ? item.district_id
+                  ? item?.district_id
+                  : type === "ward"
+                  ? item?.ward_id
                   : item?.code
               }
               value={
@@ -29,6 +35,8 @@ const SelectAddress = ({ label, options, value, setValue, type, reset }) => {
                   ? item?.province_id
                   : type === "district"
                   ? item.district_id
+                  : type === "ward"
+                  ? item?.ward_id
                   : item?.code
               }
             >
@@ -36,7 +44,9 @@ const SelectAddress = ({ label, options, value, setValue, type, reset }) => {
                 ? item?.province_name
                 : type === "district"
                 ? item.district_name
-                : item?.name}
+                : type === "ward"
+                ? item.ward_name
+                : item?.value}
             </option>
           );
         })}
@@ -45,4 +55,4 @@ const SelectAddress = ({ label, options, value, setValue, type, reset }) => {
   );
 };
 
-export default memo(SelectAddress);
+export default memo(Select);

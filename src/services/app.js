@@ -36,7 +36,7 @@ export const aipGetProvinces = () =>
       reject(error);
     }
   });
-export const aipGetProvincesMap = () =>
+export const apiGetProvincesMap = () =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosDefault({
@@ -48,12 +48,24 @@ export const aipGetProvincesMap = () =>
       reject(error);
     }
   });
-export const aipGetDistrictMap = (idProvince) =>
+export const apiGetDistrictMap = (idProvince) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosDefault({
         method: "GET",
         url: `https://vapi.vnappmob.com/api/province/district/${idProvince}`,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+export const apiGetWardMap = (idDistrict) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosDefault({
+        method: "GET",
+        url: `https://vapi.vnappmob.com/api/province/ward/${idDistrict}`,
       });
       resolve(response);
     } catch (error) {

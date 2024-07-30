@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from "react";
-import SelectAddress from "./SelectAddress";
-import { aipGetProvincesMap, aipGetDistrictMap } from "../services";
-const Address = () => {
+import React, { memo, useEffect, useState } from "react";
+import Select from "./Select";
+import InputReadOnly from "./InputReadOnly";
+import {
+  apiGetProvincesMap,
+  apiGetDistrictMap,
+  apiGetWardMap,
+} from "../services";
+const Address = ({ setPayload }) => {
   const [provinces, setProvinces] = useState([]);
   const [province, setProvince] = useState();
   const [districts, setDistricts] = useState([]);
   const [district, setDistrict] = useState();
   const [reset, setReset] = useState(false);
+  const [wards, setWards] = useState([]);
+  const [ward, setWard] = useState();
   useEffect(() => {
     const fetchPublicProvinces = async () => {
-      const response = await aipGetProvincesMap();
+      const response = await apiGetProvincesMap();
       if (response.status === 200) {
         setProvinces(response?.data?.results);
       }
@@ -19,7 +26,7 @@ const Address = () => {
   useEffect(() => {
     setDistrict(null);
     const fetchPublicDistricts = async () => {
-      const response = await aipGetDistrictMap(province);
+      const response = await apiGetDistrictMap(province);
       if (response.status === 200) {
         setDistricts(response?.data?.results);
       }
@@ -28,50 +35,96 @@ const Address = () => {
     !province ? setReset(true) : setReset(false);
     !province && setDistricts([]);
   }, [province]);
+  useEffect(() => {
+    setWard(null);
+    const fetchPublicWards = async () => {
+      const response = await apiGetWardMap(district);
+      if (response.status === 200) {
+        setWards(response?.data?.results);
+      }
+    };
+    district && fetchPublicWards();
+    !district ? setReset(true) : setReset(false);
+    !district && setWards([]);
+  }, [district]);
+  useEffect(() => {
+    setPayload((prev) => ({
+      ...prev,
+      province: province
+        ? provinces?.find((item) => item.province_id === province)
+            ?.province_name
+        : "",
+      address: `${
+        ward
+          ? `${wards?.find((item) => item.ward_id === ward)?.ward_name}, `
+          : ""
+      } ${
+        district
+          ? `${
+              districts.find((item) => item.district_id === district)
+                ?.district_name
+            }, `
+          : ""
+      } ${
+        province
+          ? provinces?.find((item) => item.province_id === province)
+              ?.province_name
+          : ""
+      }`,
+    }));
+  }, [province, district, ward]);
   return (
     <div>
       <h2 className="font-semibold text-xl py-4">Địa chỉ cho thuê</h2>
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-6">
-          <SelectAddress
+          <Select
             type="province"
             value={province}
             setValue={setProvince}
             options={provinces}
-            label="Tỉnh/ thành phố"
+            label="Tỉnh / Thành phố"
           />
-          <SelectAddress
+          <Select
             value={district}
             setValue={setDistrict}
             reset={reset}
             type="district"
             options={districts}
-            label="Quận/huyện"
+            label="Quận / Huyện"
+          />
+          <Select
+            value={ward}
+            setValue={setWard}
+            reset={reset}
+            type="ward"
+            options={wards}
+            label="Xã / Phường"
           />
         </div>
-        <div className="flex flex-col gap-2">
-          <input
-            type="text"
-            readOnly
-            className="border border-gray-200 rounded-md bg-gray-100 p-2 w-full outline-none"
-            value={`${
-              district
-                ? `${
-                    districts.find((item) => item.district_id === district)
-                      ?.district_name
-                  }, `
-                : ""
-            } ${
-              province
-                ? provinces?.find((item) => item.province_id === province)
-                    ?.province_name
-                : ""
-            }`}
-          />
-        </div>
+        <InputReadOnly
+          label="Địa chỉ chính xác"
+          value={`${
+            ward
+              ? `${wards?.find((item) => item.ward_id === ward)?.ward_name}, `
+              : ""
+          } ${
+            district
+              ? `${
+                  districts.find((item) => item.district_id === district)
+                    ?.district_name
+                }, `
+              : ""
+          } ${
+            province
+              ? provinces?.find((item) => item.province_id === province)
+                  ?.province_name
+              : ""
+          }`}
+        />
       </div>
     </div>
   );
 };
 
-export default Address;
+export default memo(Address);

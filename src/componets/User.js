@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import avatar from "../assets/avata.png";
 const User = () => {
   const { userData } = useSelector((state) => state.user);
-
   return (
     <div className="flex items-center gap-2">
       <img
