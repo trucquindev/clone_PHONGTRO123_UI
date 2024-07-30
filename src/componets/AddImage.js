@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdImages } from "react-icons/io";
 import { apiUploadImage } from "../services/post";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -31,11 +31,13 @@ const AddImage = ({ payload, setPayload }) => {
   };
   const handleDeleteImage = (image) => {
     setImagesPreview((prev) => prev.filter((item) => item !== image));
-    // setPayload((prev) => ({
-    //   ...prev,
-    //   images: [...payload.images, ...images],
-    // }));
   };
+  useEffect(() => {
+    setPayload((prev) => ({
+      ...prev,
+      images: [...imagesPreview],
+    }));
+  }, [imagesPreview]);
   return (
     <div className="w-full">
       <h2 className="font-semibold text-xl py-4">Thêm hình ảnh</h2>

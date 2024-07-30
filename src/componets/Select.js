@@ -15,7 +15,7 @@ const Select = ({ label, options, value, setValue, type, reset, name }) => {
         }
         id="select-address"
         name="select-address"
-        className="outline-none border border-gray-300 w-full p-2 rounded-md"
+        className="outline-none border border-gray-300 w-full p-1 rounded-md"
       >
         <option value="">{`--Chọn ${label}--`}</option>
         {options?.map((item) => {
