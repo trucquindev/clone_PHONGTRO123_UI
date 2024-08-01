@@ -3,7 +3,6 @@ export const getCodePrice = (totals, min, max) => {
   let arr = [];
   return totals.map((item) => {
     let arrMaxMin = getNumbers(item.value);
-    console.log(arrMaxMin);
     return {
       ...item,
       min:

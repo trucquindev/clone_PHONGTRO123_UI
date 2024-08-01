@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import * as actions from "../../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import validate from "../../ultils/common/validateField";
 const Login = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -34,59 +35,12 @@ const Login = () => {
           phone: payload.phone,
           password: payload.password,
         };
-    let invalidate = validate(finalPayload);
+    let invalidate = validate(finalPayload, setInvaliableFiles);
     if (invalidate === 0) {
       isRegister
         ? dispatch(actions.register(payload))
         : dispatch(actions.loggin(payload));
     }
-  };
-  const validate = (payload) => {
-    const fileds = Object.entries(payload);
-    let invalidate = 0;
-    fileds.forEach((item) => {
-      if (item[1] === "") {
-        setInvaliableFiles((prev) => [
-          ...prev,
-          {
-            name: item[0],
-            massage: "Trường này không được bỏ trống",
-          },
-        ]);
-        invalidate++;
-      }
-    });
-    fileds.forEach((item) => {
-      switch (item[0]) {
-        case "password":
-          if (item[1].length < 6) {
-            setInvaliableFiles((prev) => [
-              ...prev,
-              {
-                name: item[0],
-                massage: "Mật khẩu ít nhất 6 ký tự",
-              },
-            ]);
-            invalidate++;
-          }
-          break;
-        case "phone":
-          if (!+item[1]) {
-            setInvaliableFiles((prev) => [
-              ...prev,
-              {
-                name: item[0],
-                massage: "Số điện thoại không hợp lệ",
-              },
-            ]);
-            invalidate++;
-          }
-          break;
-        default:
-          break;
-      }
-    });
-    return invalidate;
   };
   return (
     <div className="w-full flex items-center justify-center">

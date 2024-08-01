@@ -13,9 +13,18 @@ const target = [
     code: "Nữ",
     value: "Nữ",
   },
+  {
+    code: "Tất cả",
+    value: "Tất cả",
+  },
 ];
 
-const Overview = ({ payload, setPayload }) => {
+const Overview = ({
+  payload,
+  setPayload,
+  invaliableFiles,
+  setInvaliableFiles,
+}) => {
   const { categories } = useSelector((state) => state.app);
   const { userData } = useSelector((state) => state.user);
   return (
@@ -30,9 +39,13 @@ const Overview = ({ payload, setPayload }) => {
             label="Loại chuyên mục"
             options={categories}
             type="category"
+            invaliableFiles={invaliableFiles}
+            setInvaliableFiles={setInvaliableFiles}
           />
         </div>
         <InputFormV2
+          invaliableFiles={invaliableFiles}
+          setInvaliableFiles={setInvaliableFiles}
           value={payload.title}
           setValue={setPayload}
           name="title"
@@ -41,6 +54,7 @@ const Overview = ({ payload, setPayload }) => {
         <div className="flex flex-col">
           <label htmlFor="desc">Nội dung mô tả</label>
           <textarea
+            onFocus={() => setInvaliableFiles([])}
             value={payload.description}
             onChange={(e) =>
               setPayload((prev) => ({ ...prev, description: e.target.value }))
@@ -50,11 +64,18 @@ const Overview = ({ payload, setPayload }) => {
             rows="10"
             className="w-full rounded-md outline-none border border-gray-200 p-2"
           />
+          <small className="text-red-400">
+            {invaliableFiles?.some((item) => item.name === "description") &&
+              invaliableFiles?.find((item) => item.name === "description")
+                ?.massage}
+          </small>
         </div>
         <div className="w-1/2 flex flex-col gap-4">
           <InputReadOnly label="Thông tin liên hệ" value={userData?.name} />
           <InputReadOnly label="Điện thoại" value={userData?.phone} />
           <InputFormV2
+            invaliableFiles={invaliableFiles}
+            setInvaliableFiles={setInvaliableFiles}
             small="Nhập đầy đủ số, ví dụ 1 triệu thì nhập là 1000000"
             label="Giá cho thuê"
             unit="đồng"
@@ -63,6 +84,8 @@ const Overview = ({ payload, setPayload }) => {
             setValue={setPayload}
           />
           <InputFormV2
+            invaliableFiles={invaliableFiles}
+            setInvaliableFiles={setInvaliableFiles}
             value={payload.areaNumber}
             setValue={setPayload}
             name="areaNumber"
@@ -70,6 +93,8 @@ const Overview = ({ payload, setPayload }) => {
             unit="m2"
           />
           <Select
+            invaliableFiles={invaliableFiles}
+            setInvaliableFiles={setInvaliableFiles}
             label="Đối tượng cho thuê"
             options={target}
             value={payload.target}

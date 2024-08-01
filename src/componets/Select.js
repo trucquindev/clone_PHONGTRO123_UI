@@ -1,6 +1,23 @@
 import React, { memo } from "react";
 
-const Select = ({ label, options, value, setValue, type, reset, name }) => {
+const Select = ({
+  label,
+  options,
+  value,
+  setValue,
+  type,
+  reset,
+  name,
+  invaliableFiles,
+  setInvaliableFiles,
+}) => {
+  const hanldeErrorText = () => {
+    let errorTextName = invaliableFiles?.find((item) => item.name === name);
+    let errorText = invaliableFiles?.find((item) => item.name === "address");
+    return `${errorTextName ? errorTextName.massage : ""}${
+      errorText ? errorText.massage : ""
+    } `;
+  };
   return (
     <div className="flex flex-col gap-2 flex-1">
       <label className="font-medium" htmlFor="select-address">
@@ -8,6 +25,7 @@ const Select = ({ label, options, value, setValue, type, reset, name }) => {
       </label>
       <select
         value={reset ? "" : value || ""}
+        onFocus={() => setInvaliableFiles([])}
         onChange={(e) =>
           !name
             ? setValue(e?.target?.value)
@@ -51,6 +69,7 @@ const Select = ({ label, options, value, setValue, type, reset, name }) => {
           );
         })}
       </select>
+      <small className="text-red-400">{hanldeErrorText()}</small>
     </div>
   );
 };

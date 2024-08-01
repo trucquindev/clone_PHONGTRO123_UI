@@ -3,7 +3,7 @@ import { IoMdImages } from "react-icons/io";
 import { apiUploadImage } from "../services/post";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { Loading } from "./";
-const AddImage = ({ payload, setPayload }) => {
+const AddImage = ({ payload, setPayload, isSuccess }) => {
   const [imagesPreview, setImagesPreview] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const handleFiles = async (e) => {
@@ -38,6 +38,11 @@ const AddImage = ({ payload, setPayload }) => {
       images: [...imagesPreview],
     }));
   }, [imagesPreview]);
+  useEffect(() => {
+    if (isSuccess) {
+      setImagesPreview([]);
+    }
+  }, [isSuccess]);
   return (
     <div className="w-full">
       <h2 className="font-semibold text-xl py-4">Thêm hình ảnh</h2>
@@ -57,6 +62,9 @@ const AddImage = ({ payload, setPayload }) => {
           )}
         </label>
         <input onChange={handleFiles} multiple hidden type="file" id="file" />
+        <p className="text-red-400">
+          {payload.images.length === 0 && "Vui lòng tải ảnh của bạn lên !"}
+        </p>
         <div className="w-full flex flex-col gap-4">
           <h3 className="font-semibold">Ảnh bạn đã tải lên</h3>
           <div className="flex gap-4 items-center">

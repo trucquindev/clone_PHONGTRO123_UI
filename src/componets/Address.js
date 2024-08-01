@@ -6,7 +6,7 @@ import {
   apiGetDistrictMap,
   apiGetWardMap,
 } from "../services";
-const Address = ({ setPayload }) => {
+const Address = ({ setPayload, invaliableFiles, setInvaliableFiles }) => {
   const [provinces, setProvinces] = useState([]);
   const [province, setProvince] = useState();
   const [districts, setDistricts] = useState([]);
@@ -58,14 +58,14 @@ const Address = ({ setPayload }) => {
         ward
           ? `${wards?.find((item) => item.ward_id === ward)?.ward_name}, `
           : ""
-      } ${
+      }${
         district
           ? `${
               districts.find((item) => item.district_id === district)
                 ?.district_name
             }, `
           : ""
-      } ${
+      }${
         province
           ? provinces?.find((item) => item.province_id === province)
               ?.province_name
@@ -79,6 +79,8 @@ const Address = ({ setPayload }) => {
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-6">
           <Select
+            invaliableFiles={invaliableFiles}
+            setInvaliableFiles={setInvaliableFiles}
             type="province"
             value={province}
             setValue={setProvince}
@@ -86,6 +88,8 @@ const Address = ({ setPayload }) => {
             label="Tỉnh / Thành phố"
           />
           <Select
+            invaliableFiles={invaliableFiles}
+            setInvaliableFiles={setInvaliableFiles}
             value={district}
             setValue={setDistrict}
             reset={reset}
@@ -94,6 +98,8 @@ const Address = ({ setPayload }) => {
             label="Quận / Huyện"
           />
           <Select
+            invaliableFiles={invaliableFiles}
+            setInvaliableFiles={setInvaliableFiles}
             value={ward}
             setValue={setWard}
             reset={reset}
