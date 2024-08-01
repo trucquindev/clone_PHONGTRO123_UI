@@ -11,7 +11,7 @@ const menuManager = [
   {
     id: 2,
     text: "Quản lý tin đăng",
-    path: "/he-thong/quan-li-bai-dang",
+    path: "/he-thong/quan-ly-bai-dang",
     icon: <PiNotebook />,
   },
   {

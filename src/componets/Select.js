@@ -14,9 +14,13 @@ const Select = ({
   const hanldeErrorText = () => {
     let errorTextName = invaliableFiles?.find((item) => item.name === name);
     let errorText = invaliableFiles?.find((item) => item.name === "address");
-    return `${errorTextName ? errorTextName.massage : ""}${
-      errorText ? errorText.massage : ""
-    } `;
+    return `${
+      errorTextName
+        ? errorTextName.massage
+        : "" || errorText
+        ? errorText.massage
+        : ""
+    }`;
   };
   return (
     <div className="flex flex-col gap-2 flex-1">
@@ -33,7 +37,7 @@ const Select = ({
         }
         id="select-address"
         name="select-address"
-        className="outline-none border border-gray-300 w-full p-1 rounded-md"
+        className="outline-none border border-gray-300 w-full p-1 rounded-md text-sm"
       >
         <option value="">{`--Chọn ${label}--`}</option>
         {options?.map((item) => {

@@ -103,7 +103,7 @@ const CreatePost = () => {
             bgColor="bg-green-600"
             textColor="text-white"
           />
-          <div className="h-[500px]"></div>
+          <div className="h-[50px]"></div>
         </div>
         <div className="w-[30%] flex-none">map</div>
       </div>
