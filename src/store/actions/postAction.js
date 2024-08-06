@@ -91,3 +91,10 @@ export const getPostById = (query) => async (dispatch) => {
     });
   }
 };
+export const editData = (dataEdit) => ({
+  type: actionTypes.EDIT_DATA,
+  dataEdit,
+});
+export const resetData = () => ({
+  type: actionTypes.RESET_DATA,
+});

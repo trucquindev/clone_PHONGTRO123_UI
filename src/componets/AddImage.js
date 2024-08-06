@@ -3,9 +3,15 @@ import { IoMdImages } from "react-icons/io";
 import { apiUploadImage } from "../services/post";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { Loading } from "./";
-const AddImage = ({ payload, setPayload, isSuccess }) => {
+const AddImage = ({ payload, setPayload, isSuccess, dataEdit, isEdit }) => {
   const [imagesPreview, setImagesPreview] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    if (isEdit) {
+      let images = JSON.parse(dataEdit?.images?.image);
+      images && setImagesPreview(images);
+    }
+  }, [dataEdit, isEdit]);
   const handleFiles = async (e) => {
     e.stopPropagation();
     setIsLoading(true);

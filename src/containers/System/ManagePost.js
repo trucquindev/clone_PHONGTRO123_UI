@@ -1,27 +1,63 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
-import { apiGetPostById } from "../../services";
 import moment from "moment";
+import Swal from "sweetalert2";
+import { apiDeletePost } from "../../services";
+import { Button, UpdatePost } from "../../componets";
 const ManagePost = () => {
   const dispatch = useDispatch();
+  const [isEdit, setIsEdit] = useState(false);
+  const [status, setStatus] = useState("0");
+  const [post, setPost] = useState([]);
+  const { posts } = useSelector((state) => state.post);
+  useEffect(() => {
+    setPost(posts);
+  }, [posts]);
   useEffect(() => {
     dispatch(actions.getPostById());
-  }, []);
-  const checkStatus = (datetime) => {
-    let todayInSeconds = new Date().getTime();
-    let expireDayInSeconds = datetime.getTime();
-    return todayInSeconds >= expireDayInSeconds
-      ? "Đang hoạt động"
-      : "Đã hết hạn";
+  }, [isEdit]);
+  const checkStatus = (datetime) =>
+    moment(datetime, process.env.REACT_APP_FORMAT_DAY).isSameOrAfter(
+      new Date().toDateString()
+    );
+
+  const handleDeletedPost = async (postId) => {
+    const response = await apiDeletePost(postId);
+
+    if (response.data.err === 0) {
+      dispatch(actions.getPostById());
+    } else {
+      Swal.fire("Oops !", "Error deleting post", "error");
+    }
   };
-  const { posts } = useSelector((state) => state.post);
+  useEffect(() => {
+    if (status === 1) {
+      const activePost = post.filter((item) =>
+        checkStatus(item?.overviews?.expire?.split(" ")[2])
+      );
+      setPost(activePost);
+    } else if (status === 2) {
+      const expiredPost = post.filter(
+        (item) => !checkStatus(item?.overviews?.expire?.split(" ")[2])
+      );
+      setPost(expiredPost);
+    } else {
+      setPost(posts);
+    }
+  }, [status]);
   return (
-    <div>
+    <div className="">
       <div className=" border-b border-gray-200 py-4 flex justify-between items-center">
         <h1 className="text-2xl font-medium">Quản lý tin đăng</h1>
-        <select className="outline-none border border-gray-200 rounded-md p-1 ">
-          <option>Lọc theo trạng thái</option>
+        <select
+          onChange={(e) => setStatus(+e.target.value)}
+          value={status}
+          className="outline-none border border-gray-200 rounded-md p-1 "
+        >
+          <option value="0">Lọc theo trạng thái</option>
+          <option value="1">Đang hoạt động</option>
+          <option value="2">Đã hết hạn</option>
         </select>
       </div>
       <table className="w-full table-auto">
@@ -48,10 +84,13 @@ const ManagePost = () => {
             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
               Trạng thái
             </th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Tùy chọn
+            </th>
           </tr>
         </thead>
         <tbody>
-          {posts?.map((item) => {
+          {post?.map((item) => {
             return (
               <tr key={item?.id}>
                 <td className="text-center border p-2">
@@ -59,11 +98,15 @@ const ManagePost = () => {
                 </td>
                 <td className="border p-1 w-36 h-10 object-cover">
                   <img
+                    className="w-36 h-20"
                     src={JSON.parse(item?.images?.image)[0] || ""}
                     alt="avatar"
                   />
                 </td>
-                <td className="text-center border p-2 ">{item?.title}</td>
+                <td className="text-center border p-2 ">{`${item?.title.slice(
+                  0,
+                  30
+                )}...`}</td>
                 <td className="text-center border p-2 ">
                   {item?.attributes?.price}
                 </td>
@@ -74,15 +117,33 @@ const ManagePost = () => {
                   {item?.overviews?.expire}
                 </td>
                 <td className="text-center border p-2">
-                  {checkStatus(
-                    new Date(item?.overviews?.expire?.split(" ")[2])
-                  )}
+                  {checkStatus(item?.overviews?.expire?.split(" ")[2])
+                    ? "Đang hoạt đông"
+                    : "Đã hết hạn"}
+                </td>
+                <td className="text-center border p-2 flex justify-between items-center h-[90px]">
+                  <Button
+                    onClick={() => {
+                      dispatch(actions.editData(item));
+                      setIsEdit(true);
+                    }}
+                    text="Sửa"
+                    bgColor="bg-green-600"
+                    textColor="text-white"
+                  />
+                  <Button
+                    text="Xóa"
+                    onClick={() => handleDeletedPost(item.id)}
+                    bgColor="bg-red-600"
+                    textColor="text-white"
+                  />
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
+      {isEdit && <UpdatePost setIsEdit={setIsEdit} isEdit={isEdit} />}
     </div>
   );
 };

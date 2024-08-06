@@ -76,3 +76,29 @@ export const apiGetPostById = (query) =>
       reject(error);
     }
   });
+export const apiUpdatePost = (payload) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "PUT",
+        url: `api/v1/post/updatePost`,
+        data: payload,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+export const apiDeletePost = (postId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "delete",
+        url: `api/v1/post/deletePost`,
+        params: { postId },
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

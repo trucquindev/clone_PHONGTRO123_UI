@@ -6,14 +6,45 @@ import {
   apiGetDistrictMap,
   apiGetWardMap,
 } from "../services";
-const Address = ({ setPayload, invaliableFiles, setInvaliableFiles }) => {
+import { useSelector } from "react-redux";
+const Address = ({
+  setPayload,
+  invaliableFiles,
+  setInvaliableFiles,
+  isEdit,
+}) => {
+  const { dataEdit } = useSelector((state) => state.post);
   const [provinces, setProvinces] = useState([]);
-  const [province, setProvince] = useState();
+  const [province, setProvince] = useState("");
+
   const [districts, setDistricts] = useState([]);
   const [district, setDistrict] = useState();
   const [reset, setReset] = useState(false);
   const [wards, setWards] = useState([]);
   const [ward, setWard] = useState();
+  useEffect(() => {
+    let arrEditAddress = isEdit ? dataEdit?.address?.split(", ") : "";
+    let foundProvince =
+      provinces.length > 0 &&
+      provinces?.find((item) => item.province_name === arrEditAddress?.[2])
+        ?.province_id;
+    setProvince(foundProvince ? foundProvince : "");
+  }, [provinces]);
+  useEffect(() => {
+    let arrEditAddress = isEdit ? dataEdit?.address?.split(", ") : "";
+    let foundDistrict =
+      districts.length > 0 &&
+      districts?.find((item) => item.district_name === arrEditAddress?.[1])
+        ?.district_id;
+    setDistrict(foundDistrict ? foundDistrict : "");
+  }, [districts]);
+  useEffect(() => {
+    let arrEditAddress = isEdit ? dataEdit?.address?.split(", ") : "";
+    let foundWard =
+      wards.length > 0 &&
+      wards?.find((item) => item.ward_name === arrEditAddress?.[0])?.ward_id;
+    setWard(foundWard ? foundWard : "");
+  }, [wards]);
   useEffect(() => {
     const fetchPublicProvinces = async () => {
       const response = await apiGetProvincesMap();

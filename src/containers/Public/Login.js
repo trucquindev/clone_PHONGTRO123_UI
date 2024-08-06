@@ -23,7 +23,9 @@ const Login = () => {
   }, [location.state?.flag]);
 
   useEffect(() => {
-    isLoggedIn && navigate("/");
+    isLoggedIn &&
+      Swal.fire("Thành công", "Chào mừng bạn !", "success") &&
+      navigate("/");
   }, [isLoggedIn]);
   useEffect(() => {
     msg && Swal.fire("Oops !", msg, "error");

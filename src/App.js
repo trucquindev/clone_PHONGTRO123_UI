@@ -8,7 +8,12 @@ import {
   SearchDetail,
 } from "./containers/Public";
 import { path } from "./ultils/constain";
-import { System, CreatePost, ManagePost } from "./containers/System";
+import {
+  System,
+  CreatePost,
+  ManagePost,
+  ManageAccount,
+} from "./containers/System";
 
 function App() {
   return (
@@ -32,6 +37,7 @@ function App() {
         <Route path={path.SYSTEM} element={<System />}>
           <Route path={path.CREATE_POST} element={<CreatePost />} />
           <Route path={path.MANAGE_POST} element={<ManagePost />} />
+          <Route path={path.MANAGE_ACCOUNT} element={<ManageAccount />} />
         </Route>
       </Routes>
     </div>

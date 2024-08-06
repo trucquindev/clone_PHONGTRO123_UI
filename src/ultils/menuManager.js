@@ -17,7 +17,7 @@ const menuManager = [
   {
     id: 3,
     text: "Thông tin tài khoản",
-    path: "/he-thong/thong-tin-tai-khoan",
+    path: "/he-thong/sua-thong-tin-ca-nhan",
     icon: <FaUserCircle />,
   },
 ];
