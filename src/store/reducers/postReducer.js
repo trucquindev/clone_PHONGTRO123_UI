@@ -4,6 +4,7 @@ const initState = {
   msg: "",
   count: 0,
   dataEdit: {},
+  postdetail: [],
 };
 
 const postReducer = (state = initState, action) => {
@@ -18,16 +19,27 @@ const postReducer = (state = initState, action) => {
         msg: action.msg || "",
         count: action.count || 0,
       };
+      break;
     case actionTypes.EDIT_DATA:
       return {
         ...state,
         dataEdit: action.dataEdit || null,
       };
+      break;
     case actionTypes.RESET_DATA:
       return {
         ...state,
         dataEdit: null,
       };
+      break;
+    case actionTypes.GET_POST_DETAIL:
+      return {
+        ...state,
+        postdetail: action.posts || [],
+        msg: action.msg || "",
+      };
+      break;
+    case actionTypes.DELETE_POST:
     default:
       return state;
   }

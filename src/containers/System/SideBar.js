@@ -15,13 +15,12 @@ const SideBar = () => {
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.user);
   const { CiLogout } = icons;
-  console.log();
   return (
     <div className="w-[240px] flex-none p-4 flex flex-col gap-6">
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2">
           <img
-            src={avata || userData?.avatar}
+            src={userData?.avatar || avata}
             alt="avatar"
             className="w-12 h-12 object-cover rounded-full border-2 border-white"
           />

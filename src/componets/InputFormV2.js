@@ -10,6 +10,7 @@ const InputFormV2 = ({
   invaliableFiles,
   setInvaliableFiles,
   derection,
+  type,
 }) => {
   return (
     <div className={`flex ${derection ? derection : "flex-col"}`}>
@@ -20,7 +21,7 @@ const InputFormV2 = ({
         <div className="flex w-full items-center">
           <input
             id="title"
-            type="text"
+            type={type ? type : "text"}
             className={`flex-auto ${
               unit ? "rounded-tl-md rounded-bl-md" : "rounded-md"
             } outline-none border flex-auto border-gray-200 p-2`}

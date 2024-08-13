@@ -58,7 +58,10 @@ const Overview = ({
             onFocus={() => setInvaliableFiles([])}
             value={payload.description}
             onChange={(e) =>
-              setPayload((prev) => ({ ...prev, description: e.target.value }))
+              setPayload((prev) => ({
+                ...prev,
+                description: e.target.value,
+              }))
             }
             id="desc"
             cols="30"

@@ -25,3 +25,16 @@ export const apiUpdateUser = (payload) =>
       reject(error);
     }
   });
+export const apiUpdatePasswordUser = (payload) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axios({
+        method: "put",
+        url: "api/v1/user/password",
+        data: payload,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

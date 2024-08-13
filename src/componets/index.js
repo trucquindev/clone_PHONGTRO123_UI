@@ -20,3 +20,4 @@ export { default as InputFormV2 } from "./InputFormV2";
 export { default as AddImage } from "./AddImage";
 export { default as Loading } from "./Loading";
 export { default as UpdatePost } from "./UpdatePost";
+export { default as SliderCustom } from "./SliderCustom";

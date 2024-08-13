@@ -3,6 +3,7 @@ import {
   apiGetPostsLimit,
   apiGetNewPosts,
   apiGetPostById,
+  apiDetailPost,
 } from "../../services/post";
 import actionTypes from "./actionType";
 export const getPosts = () => async (dispatch) => {
@@ -98,3 +99,25 @@ export const editData = (dataEdit) => ({
 export const resetData = () => ({
   type: actionTypes.RESET_DATA,
 });
+
+export const getPostDetail = (query) => async (dispatch) => {
+  try {
+    const response = await apiDetailPost(query);
+    if (response?.data.err === 0) {
+      dispatch({
+        type: actionTypes.GET_POST_DETAIL,
+        posts: response.data.response,
+      });
+    } else {
+      dispatch({
+        type: actionTypes.GET_POST_DETAIL,
+        msg: response.data.msg,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_POST_DETAIL,
+      posts: null,
+    });
+  }
+};

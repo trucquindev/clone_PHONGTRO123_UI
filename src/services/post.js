@@ -102,3 +102,16 @@ export const apiDeletePost = (postId) =>
       reject(error);
     }
   });
+export const apiDetailPost = (postId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "get",
+        url: `api/v1/post/post-detail`,
+        params: { postId },
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

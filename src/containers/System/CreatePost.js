@@ -40,6 +40,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
     let priceCode = priceCodeArr[0]?.code;
     let areaCodeArr = getCodesArea(+payload.areaNumber, areas, 20, 90);
     let areaCode = areaCodeArr[0]?.code;
+    let description = payload.description.split("\n");
     let finalPayload = {
       ...payload,
       priceNumber,
@@ -47,6 +48,7 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
       areaCode: areaCode,
       priceCode,
       userId: userData.id,
+      description,
       label: `${
         categories?.find((item) => item.code === payload.categoryCode)?.value
       } ${payload?.address.split(",")[0]}`,
@@ -58,8 +60,6 @@ const CreatePost = ({ isEdit, setIsEdit }) => {
         finalPayload.attributesId = dataEdit?.attributesId;
         finalPayload.imagesId = dataEdit?.imagesId;
         finalPayload.overviewId = dataEdit?.overviewId;
-        console.log(finalPayload);
-
         const response = await apiUpdatePost(finalPayload);
         if (response?.data?.err === 0) {
           Swal.fire(

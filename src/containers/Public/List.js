@@ -7,6 +7,7 @@ const List = ({ categoryCode }) => {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const { posts, count } = useSelector((state) => state.post);
+
   useEffect(() => {
     let params = [];
     for (let entry of searchParams.entries()) {

@@ -6,6 +6,7 @@ import {
   Homepage,
   DetailPost,
   SearchDetail,
+  Contact,
 } from "./containers/Public";
 import { path } from "./ultils/constain";
 import {
@@ -27,11 +28,12 @@ function App() {
           <Route path={path.CHO_THUE_MAT_BANG} element={<Rental />} />
           <Route path={path.CHO_THUE_PHONG_TRO} element={<Rental />} />
           <Route path={path.CHO_THUE_NHA} element={<Rental />} />
+          <Route path={path.CONTACT} element={<Contact />} />
           <Route
             path={path.DETAL_POST__TITLE__POSTID}
             element={<DetailPost />}
           />
-          <Route path={"chi-tiet/*"} element={<DetailPost />} />
+          <Route path={path.DETAIL_ALL} element={<DetailPost />} />
           <Route path={path.SEARCH} element={<SearchDetail />} />
         </Route>
         <Route path={path.SYSTEM} element={<System />}>
