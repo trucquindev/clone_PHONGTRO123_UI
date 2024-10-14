@@ -12,6 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { isLoggedIn, msg, update } = useSelector((state) => state.auth);
   const [isRegister, setisRegister] = useState(location.state?.flag);
+
   const [payload, setPayload] = useState({
     name: "",
     phone: "",
@@ -21,6 +22,7 @@ const Login = () => {
   useEffect(() => {
     setisRegister(location.state?.flag);
   }, [location.state?.flag]);
+  console.log(update);
 
   useEffect(() => {
     isLoggedIn &&
